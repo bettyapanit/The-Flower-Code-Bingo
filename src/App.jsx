@@ -45,61 +45,63 @@ const FlowerCodeBingo = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-teal-50 to-emerald-50 p-3 pb-20" 
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-teal-50 to-emerald-50 p-4 pb-20" 
          style={{ direction: 'rtl' }}>
       
-      <div className="text-center mb-3">
-        <h1 className="text-3xl font-bold text-purple-700 mb-2">בינגו קוד הפרחים</h1>
-        <p className="text-sm text-gray-700">מצאו לאורך המסלול את הפריטים המופיעים בלוח הבינגו, צלמו וזהו אותם עם גוגל תמונות</p>
+      <div className="text-center mb-2">
+        <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-teal-500 to-emerald-500 mb-2" 
+            style={{ fontFamily: 'Georgia, serif', letterSpacing: '0.5px' }}>
+          בינגו קוד הפרחים
+        </h1>
+        <p className="text-sm text-gray-700 max-w-md mx-auto">
+          מצאו לאורך המסלול את הפריטים המופיעים בלוח הבינגו, צלמו וזהו אותם עם גוגל תמונות
+        </p>
       </div>
 
-      <div className="max-w-lg mx-auto mb-4 relative">
-        <div className="absolute inset-0 grid grid-cols-4 gap-2 pointer-events-none">
-          {[...Array(12)].map((_, i) => (
-            <div key={i} className="border-2 border-purple-300 rounded-lg"></div>
-          ))}
-        </div>
-        
-        <div className="grid grid-cols-4 gap-2 relative z-10">
-          {cards.map((card) => {
-            const isRevealed = revealedCards.has(card.id);
-            return (
-              <div
-                key={card.id}
-                onClick={() => handleCardClick(card.id)}
-                className={`relative h-28 cursor-pointer transition-all duration-500 ${
-                  isRevealed ? 'card-flip' : 'hover:scale-105'
-                }`}
-                style={{ 
-                  transformStyle: 'preserve-3d',
-                  transform: isRevealed ? 'rotateY(180deg)' : 'rotateY(0deg)'
-                }}
-              >
-                <div 
-                  className="absolute inset-0 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg p-1.5 flex items-center justify-center shadow-md"
-                  style={{ backfaceVisibility: 'hidden' }}
-                >
-                  <p className="text-white text-center font-bold text-xs leading-tight">
-                    {card.text}
-                  </p>
-                </div>
+      <div className="h-6"></div>
 
-                <div 
-                  className="absolute inset-0 bg-gradient-to-br from-teal-400 to-emerald-400 rounded-lg p-2 flex flex-col items-center justify-center shadow-md"
+      <div className="max-w-md mx-auto mb-4">
+        <div className="bg-white/40 backdrop-blur-sm rounded-2xl p-4 border-4 border-purple-400 shadow-lg">
+          <div className="grid grid-cols-3 gap-3">
+            {cards.map((card) => {
+              const isRevealed = revealedCards.has(card.id);
+              return (
+                <div
+                  key={card.id}
+                  onClick={() => handleCardClick(card.id)}
+                  className={`relative h-32 cursor-pointer transition-all duration-500 ${
+                    isRevealed ? 'card-flip' : 'hover:scale-105'
+                  }`}
                   style={{ 
-                    backfaceVisibility: 'hidden',
-                    transform: 'rotateY(180deg)',
-                    direction: 'ltr'
+                    transformStyle: 'preserve-3d',
+                    transform: isRevealed ? 'rotateY(180deg)' : 'rotateY(0deg)'
                   }}
                 >
-                  <div className="text-5xl font-bold text-purple-900 mb-1">
-                    {card.char}
+                  <div 
+                    className="absolute inset-0 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg p-2 flex items-center justify-center shadow-md border-2 border-purple-700"
+                    style={{ backfaceVisibility: 'hidden' }}
+                  >
+                    <p className="text-white text-center font-bold text-sm leading-tight">
+                      {card.text}
+                    </p>
                   </div>
-                  <Check className="w-5 h-5 text-purple-700" />
+
+                  <div 
+                    className="absolute inset-0 bg-gradient-to-br from-teal-400 to-emerald-400 rounded-lg p-2 flex flex-col items-center justify-center shadow-md border-2 border-teal-600"
+                    style={{ 
+                      backfaceVisibility: 'hidden',
+                      transform: 'rotateY(180deg)'
+                    }}
+                  >
+                    <div className="text-6xl font-bold text-purple-900 mb-1" style={{ fontFamily: 'monospace' }}>
+                      {card.char}
+                    </div>
+                    <Check className="w-6 h-6 text-purple-700" />
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </div>
 
@@ -107,7 +109,6 @@ const FlowerCodeBingo = () => {
         <div className="max-w-md mx-auto">
           <div className="bg-white/95 backdrop-blur-sm rounded-xl p-5 shadow-xl border-2 border-purple-400">
             <div className="text-center">
-              <div className="text-5xl mb-3">🎉</div>
               <h2 className="text-2xl font-bold text-purple-700 mb-3">בינגו! כל הכבוד!</h2>
               <p className="text-base text-gray-700 mb-4">
                 הצלחתם למצוא את כל הפרחים וסיימתם את לוח הבינגו.
@@ -123,7 +124,7 @@ const FlowerCodeBingo = () => {
                 onChange={(e) => setUserEquation(e.target.value)}
                 placeholder="כתבו כאן..."
                 className="w-full text-center text-xl font-mono p-3 border-3 border-purple-400 rounded-lg mb-4 focus:outline-none focus:ring-3 focus:ring-purple-300"
-                dir="ltr"
+                style={{ direction: 'ltr' }}
               />
 
               <button
@@ -156,12 +157,11 @@ const FlowerCodeBingo = () => {
       {showVictory && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-3xl p-8 max-w-sm text-center shadow-2xl border-4 border-purple-500">
-            <div className="text-6xl mb-4">✓</div>
             <h2 className="text-2xl font-bold text-purple-700 mb-4">נכון!</h2>
             <p className="text-lg text-gray-700 mb-4">
               זה אכן התרגיל שהתגלה בלוח הבינגו.
             </p>
-            <div className="text-4xl font-bold text-purple-900 mb-4 font-mono" dir="ltr">
+            <div className="text-4xl font-bold text-purple-900 mb-4 font-mono" style={{ direction: 'ltr' }}>
               48*2+35-12:4
             </div>
             <p className="text-lg text-gray-700 font-medium">
