@@ -48,22 +48,18 @@ const FlowerCodeBingo = () => {
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-teal-50 to-emerald-50 p-3 pb-20" 
          style={{ direction: 'rtl' }}>
       
-      {/* Simple Header */}
       <div className="text-center mb-3">
         <h1 className="text-3xl font-bold text-purple-700 mb-2">בינגו קוד הפרחים</h1>
         <p className="text-sm text-gray-700">מצאו לאורך המסלול את הפריטים המופיעים בלוח הבינגו, צלמו וזהו אותם עם גוגל תמונות</p>
       </div>
 
-      {/* Bingo Grid - 4x3 */}
       <div className="max-w-lg mx-auto mb-4 relative">
-        {/* Grid Outline */}
         <div className="absolute inset-0 grid grid-cols-4 gap-2 pointer-events-none">
           {[...Array(12)].map((_, i) => (
             <div key={i} className="border-2 border-purple-300 rounded-lg"></div>
           ))}
         </div>
         
-        {/* Cards */}
         <div className="grid grid-cols-4 gap-2 relative z-10">
           {cards.map((card) => {
             const isRevealed = revealedCards.has(card.id);
@@ -71,17 +67,16 @@ const FlowerCodeBingo = () => {
               <div
                 key={card.id}
                 onClick={() => handleCardClick(card.id)}
-                className={`relative h-28 cursor-pointer transition-all duration-500 preserve-3d ${
-                  isRevealed ? 'rotate-y-180' : 'hover:scale-105'
+                className={`relative h-28 cursor-pointer transition-all duration-500 ${
+                  isRevealed ? 'card-flip' : 'hover:scale-105'
                 }`}
                 style={{ 
                   transformStyle: 'preserve-3d',
                   transform: isRevealed ? 'rotateY(180deg)' : 'rotateY(0deg)'
                 }}
               >
-                {/* Front */}
                 <div 
-                  className="absolute inset-0 backface-hidden bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg p-1.5 flex items-center justify-center shadow-md"
+                  className="absolute inset-0 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg p-1.5 flex items-center justify-center shadow-md"
                   style={{ backfaceVisibility: 'hidden' }}
                 >
                   <p className="text-white text-center font-bold text-xs leading-tight">
@@ -89,9 +84,8 @@ const FlowerCodeBingo = () => {
                   </p>
                 </div>
 
-                {/* Back - LTR for math symbols */}
                 <div 
-                  className="absolute inset-0 backface-hidden bg-gradient-to-br from-teal-400 to-emerald-400 rounded-lg p-2 flex flex-col items-center justify-center shadow-md"
+                  className="absolute inset-0 bg-gradient-to-br from-teal-400 to-emerald-400 rounded-lg p-2 flex flex-col items-center justify-center shadow-md"
                   style={{ 
                     backfaceVisibility: 'hidden',
                     transform: 'rotateY(180deg)',
@@ -109,7 +103,6 @@ const FlowerCodeBingo = () => {
         </div>
       </div>
 
-      {/* Victory State */}
       {allRevealed && !showVictory && (
         <div className="max-w-md mx-auto">
           <div className="bg-white/95 backdrop-blur-sm rounded-xl p-5 shadow-xl border-2 border-purple-400">
@@ -140,7 +133,6 @@ const FlowerCodeBingo = () => {
                 אפשר לבדוק
               </button>
 
-              {/* Optional Hint */}
               <div className="mt-4 text-right">
                 <button
                   onClick={() => setShowHint(!showHint)}
@@ -161,7 +153,6 @@ const FlowerCodeBingo = () => {
         </div>
       )}
 
-      {/* Simple Victory Message - No confetti */}
       {showVictory && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-3xl p-8 max-w-sm text-center shadow-2xl border-4 border-purple-500">
@@ -179,8 +170,7 @@ const FlowerCodeBingo = () => {
           </div>
         </div>
       )}
- 
-      {/* Confirmation Popup */}
+
       {showConfirm !== null && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-40">
           <div className="bg-white rounded-2xl p-5 max-w-xs shadow-2xl border-2 border-purple-500">
@@ -205,17 +195,11 @@ const FlowerCodeBingo = () => {
         </div>
       )}
 
-      <style jsx>{\`
-        .preserve-3d {
-          transform-style: preserve-3d;
-        }
-        .backface-hidden {
-          backface-visibility: hidden;
-        }
-        .rotate-y-180 {
+      <style>{`
+        .card-flip {
           transform: rotateY(180deg);
         }
-      \`}</style>
+      `}</style>
     </div>
   );
 };
