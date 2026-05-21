@@ -127,8 +127,8 @@ const FlowerCodeBingo = () => {
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-teal-50 to-emerald-50 p-4 pb-20">
       
       <div className="text-center mb-2" style={{ direction: 'rtl' }}>
-        <h1 className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-teal-500 to-emerald-500 mb-2" 
-            style={{ fontFamily: 'Impact, "Arial Black", sans-serif', letterSpacing: '1px' }}>
+        <h1 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-purple-600 mb-2" 
+            style={{ fontFamily: 'system-ui, -apple-system, sans-serif', letterSpacing: '0.5px' }}>
           בינגו קוד הפרחים
         </h1>
         <p className="text-sm text-gray-700 max-w-md mx-auto">
@@ -158,16 +158,14 @@ const FlowerCodeBingo = () => {
                       transform: isRevealed ? 'rotateY(180deg)' : 'rotateY(0deg)'
                     }}
                   >
-                    {/* Front */}
+                    {/* Front - centered number and text */}
                     <div 
-                      className="absolute inset-0 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg p-2 flex flex-col items-center justify-center shadow-md border-2 border-purple-700"
+                      className="absolute inset-0 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg p-3 flex flex-col items-center justify-center shadow-md border-2 border-purple-700"
                       style={{ backfaceVisibility: 'hidden', direction: 'rtl' }}
                     >
-                      <div className="absolute top-1 right-1 bg-white/30 rounded-full w-6 h-6 flex items-center justify-center">
-                        <span className="text-white font-bold text-xs">{card.num}</span>
-                      </div>
+                      <div className="text-white font-bold text-base mb-2">{card.num}</div>
                       
-                      <p className="text-white text-center font-semibold text-sm leading-tight mb-2" 
+                      <p className="text-white text-center font-semibold text-sm leading-tight flex-1 flex items-center" 
                          style={{ fontFamily: '"Rubik", "Heebo", sans-serif', fontWeight: '600' }}>
                         {card.text}
                       </p>
@@ -177,26 +175,26 @@ const FlowerCodeBingo = () => {
                           e.stopPropagation();
                           setShowCardHint(card.id);
                         }}
-                        className="mt-auto bg-white/20 hover:bg-white/30 rounded-full px-2 py-1 flex items-center gap-1 transition-all"
+                        className="mt-2 bg-white/20 hover:bg-white/30 rounded-full px-2 py-1 flex items-center gap-1 transition-all"
                       >
                         <HelpCircle className="w-3 h-3 text-white" />
                         <span className="text-white text-xs">רמז</span>
                       </button>
                     </div>
 
-                    {/* Back */}
+                    {/* Back - darker teal with light purple text */}
                     <div 
-                      className="absolute inset-0 bg-gradient-to-br from-teal-400 to-emerald-400 rounded-lg p-2 flex flex-col items-center justify-center shadow-md border-2 border-teal-600"
+                      className="absolute inset-0 bg-gradient-to-br from-teal-600 to-teal-700 rounded-lg p-2 flex flex-col items-center justify-center shadow-md border-2 border-teal-800"
                       style={{ 
                         backfaceVisibility: 'hidden',
                         transform: 'rotateY(180deg)',
                         direction: 'ltr'
                       }}
                     >
-                      <div className="text-7xl font-bold text-purple-900 mb-2" style={{ fontFamily: 'monospace' }}>
+                      <div className="text-7xl font-bold text-purple-200 mb-2" style={{ fontFamily: 'monospace' }}>
                         {card.char}
                       </div>
-                      <Check className="w-6 h-6 text-purple-700 mb-2" />
+                      <Check className="w-6 h-6 text-purple-200 mb-2" />
                       
                       <button
                         onClick={(e) => {
