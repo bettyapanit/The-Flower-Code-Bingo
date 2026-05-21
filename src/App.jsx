@@ -3,11 +3,11 @@ import { Check, Lightbulb, HelpCircle } from 'lucide-react';
 
 const FlowerCodeBingo = () => {
   const [revealedCards, setRevealedCards] = useState(new Set());
-  const [showConfirm, setShowConfirm] = useState(null);
   const [showVictory, setShowVictory] = useState(false);
   const [showHint, setShowHint] = useState(false);
   const [userEquation, setUserEquation] = useState('');
   const [showCardHint, setShowCardHint] = useState(null);
+  const [plantNames, setPlantNames] = useState({});
 
   const cards = [
     { 
@@ -99,21 +99,20 @@ const FlowerCodeBingo = () => {
   const correctEquation = "48*2+35-12:4";
   const allRevealed = revealedCards.size === 12;
 
-  const handleCardClick = (id) => {
-    if (!revealedCards.has(id)) {
-      setShowConfirm(id);
+  const confirmFind = (id) => {
+    if (plantNames[id] && plantNames[id].trim()) {
+      setRevealedCards(new Set([...revealedCards, id]));
     }
-  };
-
-  const confirmFind = () => {
-    setRevealedCards(new Set([...revealedCards, showConfirm]));
-    setShowConfirm(null);
   };
 
   const cancelCard = (id) => {
     const newRevealed = new Set(revealedCards);
     newRevealed.delete(id);
     setRevealedCards(newRevealed);
+  };
+
+  const updatePlantName = (id, name) => {
+    setPlantNames(prev => ({...prev, [id]: name}));
   };
 
   const checkEquation = () => {
@@ -124,23 +123,23 @@ const FlowerCodeBingo = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-teal-50 to-emerald-50 p-4 pb-20">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-teal-50 to-emerald-50 p-3 pb-20">
       
       <div className="text-center mb-2" style={{ direction: 'rtl' }}>
-        <h1 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-purple-600 mb-2" 
-            style={{ fontFamily: 'system-ui, -apple-system, sans-serif', letterSpacing: '0.5px' }}>
+        <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-purple-600 mb-1" 
+            style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>
           בינגו קוד הפרחים
         </h1>
-        <p className="text-sm text-gray-700 max-w-md mx-auto">
+        <p className="text-xs text-gray-700 max-w-md mx-auto">
           מצאו לאורך המסלול את הפריטים המופיעים בלוח הבינגו, צלמו וזהו אותם עם גוגל תמונות
         </p>
       </div>
 
-      <div className="h-6"></div>
+      <div className="h-4"></div>
 
       <div className="max-w-md mx-auto mb-4" dir="ltr">
-        <div className="bg-gradient-to-br from-white/90 to-gray-50/90 backdrop-blur-sm rounded-2xl p-4 shadow-2xl">
-          <div className="grid grid-cols-3 gap-3">
+        <div className="bg-gradient-to-br from-white/90 to-gray-50/90 backdrop-blur-sm rounded-2xl p-3 shadow-2xl">
+          <div className="grid grid-cols-3 gap-2">
             {cards.map((card) => {
               const isRevealed = revealedCards.has(card.id);
               return (
@@ -149,40 +148,74 @@ const FlowerCodeBingo = () => {
                   className="relative h-40"
                 >
                   <div
-                    onClick={() => handleCardClick(card.id)}
-                    className={`relative h-full cursor-pointer transition-all duration-500 ${
-                      isRevealed ? 'card-flip' : 'hover:scale-105'
+                    className={`relative h-full transition-all duration-500 ${
+                      isRevealed ? 'card-flip' : ''
                     }`}
                     style={{ 
                       transformStyle: 'preserve-3d',
                       transform: isRevealed ? 'rotateY(180deg)' : 'rotateY(0deg)'
                     }}
                   >
-                    {/* Front - centered number and text */}
+                    {/* Front */}
                     <div 
-                      className="absolute inset-0 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg p-3 flex flex-col items-center justify-center shadow-md border-2 border-purple-700"
+                      className="absolute inset-0 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg p-1.5 flex flex-col items-center shadow-md border-2 border-purple-700"
                       style={{ backfaceVisibility: 'hidden', direction: 'rtl' }}
                     >
-                      <div className="text-white font-bold text-base mb-2">{card.num}</div>
+                      <div className="text-white font-bold text-sm mb-1">{card.num}</div>
                       
-                      <p className="text-white text-center font-semibold text-sm leading-tight flex-1 flex items-center" 
+                      <p className="text-white text-center font-semibold text-xs leading-tight px-1 mb-2 flex-1 flex items-center" 
                          style={{ fontFamily: '"Rubik", "Heebo", sans-serif', fontWeight: '600' }}>
                         {card.text}
                       </p>
                       
-                      <button
-                        onClick={(e) => {
+                      <input
+                        type="text"
+                        value={plantNames[card.id] || ''}
+                        onChange={(e) => {
                           e.stopPropagation();
-                          setShowCardHint(card.id);
+                          updatePlantName(card.id, e.target.value);
                         }}
-                        className="mt-2 bg-white/20 hover:bg-white/30 rounded-full px-2 py-1 flex items-center gap-1 transition-all"
-                      >
-                        <HelpCircle className="w-3 h-3 text-white" />
-                        <span className="text-white text-xs">רמז</span>
-                      </button>
+                        onClick={(e) => e.stopPropagation()}
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault();
+                            confirmFind(card.id);
+                          }
+                        }}
+                        placeholder="שם הצמח"
+                        className="w-full text-center text-xs bg-white/30 text-white placeholder-white/70 border border-white/40 rounded px-1 py-0.5 mb-1 focus:outline-none focus:bg-white/40"
+                        style={{ direction: 'rtl' }}
+                      />
+                      
+                      <div className="w-full flex justify-between items-center">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setShowCardHint(card.id);
+                          }}
+                          className="bg-white/20 hover:bg-white/30 rounded-full p-1 transition-all"
+                        >
+                          <HelpCircle className="w-3 h-3 text-white" />
+                        </button>
+                        
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            confirmFind(card.id);
+                          }}
+                          disabled={!plantNames[card.id] || !plantNames[card.id].trim()}
+                          className={`rounded-full p-1 transition-all ${
+                            plantNames[card.id] && plantNames[card.id].trim()
+                              ? 'bg-teal-600 hover:bg-teal-700 cursor-pointer'
+                              : 'bg-white/20 cursor-not-allowed opacity-40'
+                          }`}
+                        >
+                          <Check className="w-3 h-3 text-white" />
+                        </button>
+                      </div>
                     </div>
 
-                    {/* Back - darker teal with light purple text */}
+                    {/* Back */}
                     <div 
                       className="absolute inset-0 bg-gradient-to-br from-teal-600 to-teal-700 rounded-lg p-2 flex flex-col items-center justify-center shadow-md border-2 border-teal-800"
                       style={{ 
@@ -191,17 +224,23 @@ const FlowerCodeBingo = () => {
                         direction: 'ltr'
                       }}
                     >
-                      <div className="text-7xl font-bold text-purple-200 mb-2" style={{ fontFamily: 'monospace' }}>
+                      <div className="text-6xl font-bold text-purple-200 mb-1" style={{ fontFamily: 'monospace' }}>
                         {card.char}
                       </div>
-                      <Check className="w-6 h-6 text-purple-200 mb-2" />
+                      <Check className="w-5 h-5 text-purple-200 mb-1" />
+                      
+                      {plantNames[card.id] && (
+                        <div className="text-xs text-purple-100 text-center mb-1" style={{ direction: 'rtl' }}>
+                          {plantNames[card.id]}
+                        </div>
+                      )}
                       
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
                           cancelCard(card.id);
                         }}
-                        className="mt-auto bg-red-500/80 hover:bg-red-600 text-white text-xs px-2 py-1 rounded transition-all"
+                        className="mt-auto bg-red-500/80 hover:bg-red-600 text-white text-xs px-2 py-0.5 rounded transition-all"
                         style={{ direction: 'rtl' }}
                       >
                         בטל
@@ -220,13 +259,20 @@ const FlowerCodeBingo = () => {
           <div className="bg-white/95 backdrop-blur-sm rounded-xl p-5 shadow-xl border-2 border-purple-400">
             <div className="text-center">
               <h2 className="text-2xl font-bold text-purple-700 mb-3">בינגו! כל הכבוד!</h2>
+              <p className="text-base text-gray-700 mb-1">
+                הצלחתם למצוא את כל הצמחים
+              </p>
+              <p className="text-base text-gray-700 mb-3">
+                וסיימתם את לוח הבינגו.
+              </p>
               <p className="text-base text-gray-700 mb-4">
-                הצלחתם למצוא את כל הפרחים וסיימתם את לוח הבינגו.
+                כעת עליכם לגלות איך להיעזר בו
                 <br/>
-                כעת עליכם לגלות איך להיעזר בו כדי לפתוח את התיבה.
+                כדי לפתוח את התיבה.
               </p>
               
-              <p className="text-sm text-gray-600 mb-3">לנוחיותכם, אפשר להיעזר בשדה כדי להזין את הדרך לתשובה:</p>
+              <p className="text-sm text-gray-600 mb-1">לנוחיותכם, אפשר להיעזר בשדה</p>
+              <p className="text-sm text-gray-600 mb-3">כדי להזין את הדרך לתשובה:</p>
               
               <input
                 type="text"
@@ -255,7 +301,7 @@ const FlowerCodeBingo = () => {
                 
                 {showHint && (
                   <div className="bg-purple-50 border border-purple-300 rounded-lg p-2 mt-2 text-xs text-purple-800 text-right">
-                    סדרו את התווים לפי סדר המשבצות (משמאל לימין, מלמעלה למטה) ופתרו את התרגיל
+                    סדרו את התווים לפי סדר המשבצות (משמאל לימין, מלמעלה למטה)
                   </div>
                 )}
               </div>
@@ -267,40 +313,16 @@ const FlowerCodeBingo = () => {
       {showVictory && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-3xl p-8 max-w-sm text-center shadow-2xl border-4 border-purple-500" style={{ direction: 'rtl' }}>
-            <h2 className="text-2xl font-bold text-purple-700 mb-4">נכון!</h2>
+            <h2 className="text-2xl font-bold text-purple-700 mb-4">צדקתם!</h2>
             <p className="text-lg text-gray-700 mb-4">
-              זה אכן התרגיל שהתגלה בלוח הבינגו.
+              זה התרגיל שנחשף בלוח הבינגו.
             </p>
             <div className="text-4xl font-bold text-purple-900 mb-4 font-mono" dir="ltr">
               48*2+35-12:4
             </div>
-            <p className="text-lg text-gray-700 font-medium">
+            <p className="text-xl text-gray-700 font-medium">
               אז מה הוא מרמז לכם בהקשר לפתיחת התיבה?
             </p>
-          </div>
-        </div>
-      )}
-
-      {showConfirm !== null && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-40">
-          <div className="bg-white rounded-2xl p-5 max-w-xs shadow-2xl border-2 border-purple-500" style={{ direction: 'rtl' }}>
-            <p className="text-xl font-bold text-gray-800 text-center mb-5">
-              האם מצאתם וצילמתם צמח שמתאים להגדרה?
-            </p>
-            <div className="flex gap-2">
-              <button
-                onClick={confirmFind}
-                className="flex-1 bg-gradient-to-r from-teal-500 to-emerald-500 text-white px-5 py-4 rounded-xl font-bold text-base shadow-lg hover:shadow-xl transition-all hover:scale-105 active:scale-95"
-              >
-                כן, מצאנו! ✓
-              </button>
-              <button
-                onClick={() => setShowConfirm(null)}
-                className="flex-1 bg-gradient-to-r from-gray-400 to-gray-500 text-white px-5 py-4 rounded-xl font-bold text-base shadow-lg hover:shadow-xl transition-all hover:scale-105 active:scale-95"
-              >
-                עדיין לא
-              </button>
-            </div>
           </div>
         </div>
       )}
