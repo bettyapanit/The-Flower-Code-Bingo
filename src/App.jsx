@@ -28,7 +28,7 @@ const FlowerCodeBingo = () => {
       id: 3, 
       num: "3",
       text: "עלה פרוותי או קטיפתי", 
-      char: "*",
+      char: "X",
       hint: "חפשו למשל: מרווה משולשת, לוטם שעיר"
     },
     { 
@@ -96,7 +96,7 @@ const FlowerCodeBingo = () => {
     }
   ];
 
-  const correctEquation = "48*2+35-12:4";
+  const correctEquation = "48X2+35-12:4";
   const allRevealed = revealedCards.size === 12;
 
   const confirmFind = (id) => {
@@ -123,10 +123,10 @@ const FlowerCodeBingo = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-teal-50 to-emerald-50 p-3 pb-20">
+    <div className="min-h-screen bg-gradient-to-br from-purple-100 via-teal-100 via-emerald-100 to-purple-50 p-3 pb-20">
       
       <div className="text-center mb-2" style={{ direction: 'rtl' }}>
-        <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-purple-600 mb-1" 
+        <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-teal-500 to-purple-600 mb-1" 
             style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>
           בינגו קוד הפרחים
         </h1>
@@ -138,8 +138,8 @@ const FlowerCodeBingo = () => {
       <div className="h-4"></div>
 
       <div className="max-w-md mx-auto mb-4" dir="ltr">
-        <div className="bg-gradient-to-br from-white/90 to-gray-50/90 backdrop-blur-sm rounded-2xl p-3 shadow-2xl">
-          <div className="grid grid-cols-3 gap-2">
+        <div className="bg-white rounded-2xl p-3 shadow-2xl">
+          <div className="grid grid-cols-3 gap-0.5">
             {cards.map((card) => {
               const isRevealed = revealedCards.has(card.id);
               return (
@@ -318,7 +318,7 @@ const FlowerCodeBingo = () => {
               זה התרגיל שנחשף בלוח הבינגו.
             </p>
             <div className="text-4xl font-bold text-purple-900 mb-4 font-mono" dir="ltr">
-              48*2+35-12:4
+              48X2+35-12:4
             </div>
             <p className="text-xl text-gray-700 font-medium">
               אז מה הוא מרמז לכם בהקשר לפתיחת התיבה?
